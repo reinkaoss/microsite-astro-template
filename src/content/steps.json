@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "title": "Take the challenges",
+    "body": "Four short challenges, each about 10 minutes. No prior knowledge needed.",
+    "order": 1
+  },
+  {
+    "id": "2",
+    "title": "Meet the team",
+    "body": "Watch short videos from people already doing the job, and see where it could take you.",
+    "order": 2
+  },
+  {
+    "id": "3",
+    "title": "Enter your details",
+    "body": "Tell us who you are so we can contact you if you win.",
+    "order": 3
+  },
+  {
+    "id": "4",
+    "title": "Win big",
+    "body": "The best entries win prizes, plus a fast-track place on the graduate programme.",
+    "order": 4
+  }
+]

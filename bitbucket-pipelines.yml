@@ -1,0 +1,13 @@
+# Runs type checks and a production build on every pull request.
+# Vercel does the actual deploys; this just stops broken code being merged.
+image: node:22
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          name: Check and build
+          caches: [node]
+          script:
+            - npm ci
+            - npm run ci

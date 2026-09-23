@@ -1,0 +1,26 @@
+---
+/** Starter button: restyle freely per site. Renders <a> when href is set. */
+interface Props {
+  href?: string
+  variant?: 'primary' | 'accent' | 'ghost'
+  size?: 'md' | 'lg'
+  class?: string
+  [key: string]: unknown
+}
+const { href, variant = 'primary', size = 'md', class: className, ...rest } = Astro.props
+const styles = {
+  primary: 'bg-brand text-brand-ink border-line hover:-translate-y-0.5 hover:shadow-card',
+  accent: 'bg-accent text-accent-ink border-line hover:-translate-y-0.5 hover:shadow-card',
+  ghost: 'bg-transparent text-ink border-current hover:bg-ink/5',
+}
+const sizes = { md: 'px-5 py-2.5 text-sm', lg: 'px-7 py-3.5 text-base' }
+const cls = [
+  'inline-flex items-center gap-2 rounded-full border-2 font-display font-bold uppercase tracking-wide transition-all duration-200',
+  styles[variant], sizes[size], className,
+].join(' ')
+const Tag = href ? 'a' : 'button'
+---
+<Tag href={href} class={cls} {...rest}>
+  <slot />
+  <svg aria-hidden="true" viewBox="0 0 20 20" class="size-4"><path d="M4 10h11m-4-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</Tag>

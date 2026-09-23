@@ -1,0 +1,13 @@
+---
+/** Starter card with the chunky border + offset shadow look. Restyle freely. */
+interface Props { class?: string; tone?: 'surface' | 'brand' | 'accent' }
+const { class: className = '', tone = 'surface' } = Astro.props
+const tones = {
+  surface: 'bg-surface text-ink',
+  brand: 'bg-brand text-brand-ink',
+  accent: 'bg-accent text-accent-ink',
+}
+---
+<div class={`rounded-card border-[3px] border-line p-6 shadow-card sm:p-8 ${tones[tone]} ${className}`}>
+  <slot />
+</div>

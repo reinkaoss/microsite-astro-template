@@ -1,0 +1,141 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Section from '@/components/starters/Section.astro'
+import Card from '@/components/starters/Card.astro'
+import Button from '@/components/starters/Button.astro'
+import ClosedPage from '@/components/ClosedPage.astro'
+import CampaignForm from '@/components/CampaignForm.astro'
+import YouTube from '@/components/embeds/YouTube'
+import Countdown from '@/components/wow/Countdown'
+import StatCounter from '@/components/wow/StatCounter'
+import LogoMarquee from '@/components/wow/LogoMarquee.astro'
+import Spotlight from '@/components/wow/Spotlight.astro'
+import campaign from '~/campaign'
+import { getPhase, byOrder } from '@/lib/campaign'
+
+// The page switches itself between coming soon / open / closed from the
+// dates in campaign.config.ts (evaluated at build; redeploy after the date).
+const phase = getPhase(campaign)
+const steps = (await getCollection('steps')).sort(byOrder)
+const prizes = (await getCollection('prizes')).sort(byOrder)
+const faqs = (await getCollection('faqs')).sort(byOrder).filter((f) => f.data.featured)
+const partners = ['Northwind', 'Globex', 'Initech', 'Umbrella', 'Hooli', 'Vandelay', 'Stark & Co', 'Wayne Group'].map((name) => ({ name }))
+---
+<BaseLayout>
+  {phase === 'closed' ? <ClosedPage /> : (
+    <>
+      <!-- Hero -->
+      <section class="relative isolate overflow-hidden border-b-2 border-line bg-surface-2">
+        <div aria-hidden="true" class="float absolute -right-24 -top-24 -z-10 size-[28rem] rounded-full bg-brand/15 blur-3xl"></div>
+        <div aria-hidden="true" class="float-slow absolute right-[12%] top-24 -z-10 hidden size-40 rotate-12 rounded-[2.5rem] border-[3px] border-line bg-accent shadow-card lg:block"></div>
+        <div aria-hidden="true" class="float absolute left-[46%] top-16 -z-10 hidden size-16 rounded-full border-[3px] border-line bg-brand shadow-card lg:block"></div>
+        <div class="container-x grid gap-12 py-20 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+          <div data-reveal>
+            <p class="eyebrow">{phase === 'coming-soon' ? 'Coming soon' : 'Entries now open'}</p>
+            <h1 class="mt-5 text-5xl font-bold leading-[1.02] sm:text-7xl">
+              Show us what <span class="highlight">you can do</span>.
+            </h1>
+            <p class="mt-6 max-w-xl text-lg text-muted">{campaign.tagline}</p>
+            <div class="mt-9 flex flex-wrap gap-4">
+              {phase === 'open' && <Button href="#enter" size="lg">{campaign.cta.label}</Button>}
+              <Button href="#how" variant="ghost" size="lg">How it works</Button>
+            </div>
+          </div>
+          <div data-reveal style="--reveal-delay:150ms">
+            <Countdown client:load to={phase === 'coming-soon' ? campaign.opensAt : campaign.closesAt} label={phase === 'coming-soon' ? 'Opens in' : 'Entries close in'} />
+          </div>
+        </div>
+      </section>
+
+      <!-- Partners -->
+      <div class="border-b-2 border-line bg-surface py-6"><LogoMarquee logos={partners} label="Our partners" /></div>
+
+      <!-- How it works -->
+      <Section id="how">
+        <p class="eyebrow" data-reveal>How it works</p>
+        <h2 class="mt-3 max-w-2xl text-4xl font-bold sm:text-5xl" data-reveal>Four steps, about 40 minutes in total.</h2>
+        <ol class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s, i) => (
+            <li data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <Card class="h-full">
+                <span class="grid size-12 place-items-center rounded-full border-[3px] border-line bg-accent font-display text-xl font-bold text-accent-ink">{i + 1}</span>
+                <h3 class="mt-5 text-xl font-bold">{s.data.title}</h3>
+                <p class="mt-2 text-muted">{s.data.body}</p>
+              </Card>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      <!-- Stats -->
+      <Section tone="brand">
+        <div class="grid gap-12 text-center sm:grid-cols-3">
+          <StatCounter client:visible value={12500} suffix="+" label="Students took part last year" />
+          <StatCounter client:visible value={94} suffix="%" label="Would recommend it" />
+          <StatCounter client:visible value={30} prefix="£" suffix="k" label="In prizes" />
+        </div>
+      </Section>
+
+      <!-- Prizes -->
+      <Section id="prizes" tone="alt">
+        <p class="eyebrow" data-reveal>Prizes</p>
+        <h2 class="mt-3 text-4xl font-bold sm:text-5xl" data-reveal>Worth the 40 minutes.</h2>
+        <Spotlight class="mt-14 grid gap-6 md:grid-cols-3">
+          {prizes.map((p, i) => (
+            <div data-reveal style={`--reveal-delay:${i * 100}ms`} class="rounded-card">
+              <Card class="h-full" tone={i === 0 ? 'brand' : 'surface'}>
+                <p class="eyebrow !text-current opacity-80">{p.data.tag}</p>
+                <h3 class="mt-3 text-2xl font-bold">{p.data.title}</h3>
+                <p class="mt-3 opacity-85">{p.data.body}</p>
+              </Card>
+            </div>
+          ))}
+        </Spotlight>
+      </Section>
+
+      <!-- Video -->
+      <Section>
+        <div class="grid items-center gap-12 lg:grid-cols-2">
+          <div data-reveal>
+            <p class="eyebrow">Meet the team</p>
+            <h2 class="mt-3 text-4xl font-bold sm:text-5xl">Hear it from people doing the job.</h2>
+            <p class="mt-5 text-lg text-muted">The player only loads when someone presses play, so the page stays fast.</p>
+          </div>
+          <div data-reveal style="--reveal-delay:120ms"><YouTube client:visible id="aqz-KE-bpKQ" title="Sample video" /></div>
+        </div>
+      </Section>
+
+      <!-- FAQs -->
+      <Section tone="alt">
+        <div class="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
+          <div data-reveal>
+            <p class="eyebrow">FAQs</p>
+            <h2 class="mt-3 text-4xl font-bold">Good questions.</h2>
+            <Button href="/faqs" variant="ghost" class="mt-8">All FAQs</Button>
+          </div>
+          <div class="space-y-4">
+            {faqs.map((f) => (
+              <details data-reveal class="group rounded-card border-[3px] border-line bg-surface p-6 open:shadow-card">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-display text-lg font-bold">
+                  {f.data.question}
+                  <span class="text-2xl transition group-open:rotate-45" aria-hidden="true">+</span>
+                </summary>
+                <p class="mt-4 text-muted">{f.data.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <!-- Enter -->
+      <Section id="enter" tone="brand">
+        <div class="mx-auto max-w-2xl text-center" data-reveal>
+          <h2 class="text-4xl font-bold sm:text-6xl">{phase === 'open' ? 'Ready? Let’s go.' : 'Opening soon.'}</h2>
+          <p class="mt-5 text-lg opacity-85">{phase === 'open' ? 'It takes about 10 minutes to get started. Your progress is saved as you go.' : 'Entries open soon. Check back then.'}</p>
+          {phase === 'open' && <div class="mt-10 flex justify-center"><CampaignForm name="enter" label="Start the challenges" redirectTo="/thanks" variant="accent" /></div>}
+        </div>
+      </Section>
+    </>
+  )}
+</BaseLayout>

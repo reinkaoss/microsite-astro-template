@@ -1,0 +1,113 @@
+---
+/**
+ * The Kit: a live catalogue of everything in the template, for demos and for
+ * picking pieces when building a new site. Delete or keep (noindex) per site.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Section from '@/components/starters/Section.astro'
+import Card from '@/components/starters/Card.astro'
+import Button from '@/components/starters/Button.astro'
+import BrandSwitcher from '@/components/wow/BrandSwitcher'
+import Countdown from '@/components/wow/Countdown'
+import StatCounter from '@/components/wow/StatCounter'
+import LogoMarquee from '@/components/wow/LogoMarquee.astro'
+import Spotlight from '@/components/wow/Spotlight.astro'
+import ConfettiButton from '@/components/wow/ConfettiButton'
+import TypeformModal from '@/components/embeds/TypeformModal'
+import campaign from '~/campaign'
+import { getPhase } from '@/lib/campaign'
+
+const phase = getPhase(campaign)
+const soon = new Date(Date.now() + 1000 * 60 * 60 * 24 * 12 + 1000 * 60 * 60 * 5).toISOString()
+
+const plumbing = [
+  ['Pinned versions', 'Node 22, npm, exact dependency versions and a lockfile. Installs are identical on every machine and on Vercel.'],
+  ['campaign.config.ts', 'Dates, forms, nav, GTM, links and closed-page copy in one typed file. Mistakes fail the build, not the live page.'],
+  ['Auto phases', `Coming soon → open → closed, switched from the dates. This site is currently: ${phase}.`],
+  ['Security headers', 'CSP and security headers in vercel.json, with the hosts each form provider needs already listed.'],
+  ['Analytics + consent', 'GTM and Cookiebot load only when their IDs are set. No placeholder IDs.'],
+  ['SEO + sharing', 'Title, description, canonical and Open Graph tags on every page from one layout.'],
+  ['Preview banner', 'Preview deployments show a banner telling PMs to press C and comment on the page.'],
+  ['No CMS', 'Copy lives in typed JSON/MDX content collections. Nothing can stop the page loading.'],
+] as const
+---
+<BaseLayout title="Kit" description="Everything in the microsite template, live." noindex>
+  <section class="border-b-2 border-line bg-surface-2">
+    <div class="container-x py-16 sm:py-20">
+      <p class="eyebrow">Microsite template</p>
+      <h1 class="mt-4 max-w-3xl text-5xl font-bold sm:text-6xl">One starter. <span class="highlight">Any client's brand.</span></h1>
+      <p class="mt-6 max-w-2xl text-lg text-muted">Every piece below is live and editable. Switch the brand to see the whole site re-skin from one theme file.</p>
+      <div class="mt-8"><BrandSwitcher client:load /></div>
+    </div>
+  </section>
+
+  <Section>
+    <h2 class="text-3xl font-bold">What's under the hood</h2>
+    <p class="mt-3 max-w-2xl text-muted">The part every site shares, so a new site starts working in minutes instead of an afternoon.</p>
+    <Spotlight class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {plumbing.map(([title, body], i) => (
+        <div data-reveal style={`--reveal-delay:${(i % 4) * 70}ms`} class="rounded-card">
+          <Card class="h-full !p-6"><h3 class="text-lg font-bold">{title}</h3><p class="mt-2 text-sm text-muted">{body}</p></Card>
+        </div>
+      ))}
+    </Spotlight>
+  </Section>
+
+  <Section tone="alt">
+    <h2 class="text-3xl font-bold">Buttons and cards</h2>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <Button href="#">Primary</Button>
+      <Button href="#" variant="accent">Accent</Button>
+      <Button href="#" variant="ghost">Ghost</Button>
+      <Button href="#" size="lg">Large</Button>
+    </div>
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      <Card><h3 class="text-xl font-bold">Surface card</h3><p class="mt-2 text-muted">The default card.</p></Card>
+      <Card tone="brand"><h3 class="text-xl font-bold">Brand card</h3><p class="mt-2 opacity-85">For the thing that matters most.</p></Card>
+      <Card tone="accent"><h3 class="text-xl font-bold">Accent card</h3><p class="mt-2 opacity-85">For a highlight or a prize.</p></Card>
+    </div>
+  </Section>
+
+  <Section>
+    <div class="grid gap-14 lg:grid-cols-2">
+      <div>
+        <h2 class="text-3xl font-bold">Countdown</h2>
+        <p class="mt-3 text-muted">Driven by <code>opensAt</code> / <code>closesAt</code>. Sample below counts to 12 days from now.</p>
+        <div class="mt-8"><Countdown client:load to={soon} label="Entries close in" /></div>
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold">Forms</h2>
+        <p class="mt-3 text-muted">Typeform, RMP Connect and HubSpot, all from <code>campaign.forms</code>. Finish a form and it celebrates.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <TypeformModal client:visible id="DvDtygj7" label="Open a Typeform" title="Sample Typeform" />
+          <ConfettiButton client:visible label="Preview the celebration" />
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="brand">
+    <h2 class="text-3xl font-bold">Animated stats</h2>
+    <div class="mt-10 grid gap-10 text-center sm:grid-cols-3">
+      <StatCounter client:visible value={9} label="Microsites this year" />
+      <StatCounter client:visible value={1} label="Template to build them" />
+      <StatCounter client:visible value={0} suffix=" h" label="Setup time lost" />
+    </div>
+  </Section>
+
+  <Section>
+    <h2 class="text-3xl font-bold">Logo marquee</h2>
+    <p class="mt-3 text-muted">Pauses on hover; stops for anyone who prefers reduced motion.</p>
+    <div class="mt-8"><LogoMarquee logos={['Northwind', 'Globex', 'Initech', 'Umbrella', 'Hooli', 'Vandelay'].map((name) => ({ name }))} /></div>
+  </Section>
+
+  <Section tone="alt">
+    <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-3xl font-bold">Closed state</h2>
+        <p class="mt-3 max-w-xl text-muted">After <code>closesAt</code> the home page becomes this automatically. It's also the page a finished site is frozen to.</p>
+      </div>
+      <Button href="/closed" variant="accent" size="lg">See the closed page</Button>
+    </div>
+  </Section>
+</BaseLayout>

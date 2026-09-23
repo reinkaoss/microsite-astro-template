@@ -1,0 +1,35 @@
+[
+  {
+    "id": "who",
+    "question": "Who can enter?",
+    "answer": "Anyone aged 18 or over who is studying at a UK university or finished a degree in the last two years.",
+    "featured": true,
+    "order": 1
+  },
+  {
+    "id": "cost",
+    "question": "Does it cost anything?",
+    "answer": "No. Entering is free and there's nothing to buy.",
+    "featured": true,
+    "order": 2
+  },
+  {
+    "id": "time",
+    "question": "How long does it take?",
+    "answer": "Each challenge takes about 10 minutes. You can do them in any order before entries close.",
+    "featured": true,
+    "order": 3
+  },
+  {
+    "id": "winners",
+    "question": "How are winners chosen?",
+    "answer": "A panel scores every completed entry against the published criteria. Winners are contacted by email within 30 days of the closing date.",
+    "order": 4
+  },
+  {
+    "id": "data",
+    "question": "What happens to my data?",
+    "answer": "We only use your details to run the competition and contact winners. See the privacy policy for the full details.",
+    "order": 5
+  }
+]

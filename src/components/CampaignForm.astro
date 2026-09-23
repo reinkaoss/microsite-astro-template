@@ -1,0 +1,18 @@
+---
+/**
+ * Renders a form from campaign.config.ts by name, whatever the provider:
+ *   <CampaignForm name="enter" />
+ * Swapping Typeform for RMP Connect is then a config change, not a code change.
+ */
+import campaign from '~/campaign'
+import TypeformModal from './embeds/TypeformModal'
+import ConnectForm from './embeds/ConnectForm.astro'
+import HubspotForm from './embeds/HubspotForm.astro'
+interface Props { name: string; label?: string; inline?: boolean; redirectTo?: string; variant?: 'primary' | 'accent' }
+const { name, label, inline, redirectTo, variant } = Astro.props
+const form = campaign.forms[name]
+if (!form) throw new Error(`campaign.config.ts has no form called "${name}"`)
+---
+{form.type === 'typeform' && <TypeformModal client:visible id={form.id} region={form.region} label={label} inline={inline} redirectTo={redirectTo} variant={variant} title={campaign.name} />}
+{form.type === 'connect' && <ConnectForm url={form.url} form={form.form} />}
+{form.type === 'hubspot' && <HubspotForm portalId={form.portalId} formId={form.formId} region={form.region} />}

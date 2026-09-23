@@ -1,0 +1,12 @@
+---
+/**
+ * RMP Connect form embed. `url` is the form's share URL from RMP Connect.
+ * Its post-submit redirect is signed into the URL (urlHash), so to change
+ * where the form sends people, regenerate the URL in RMP Connect.
+ */
+interface Props { url: string; form?: string; id?: string; minHeight?: string }
+const { url, form, id = 'connect-form', minHeight = '600px' } = Astro.props
+---
+<div id={id} class="RMPE-ConnectEmbed leading-none" style={`min-height:${minHeight}`}>
+  <script is:inline async defer src="https://forms.rmp-connect.com/embed.js" data-url={url} data-form={form}></script>
+</div>

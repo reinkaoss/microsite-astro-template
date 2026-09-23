@@ -1,0 +1,13 @@
+---
+/**
+ * Shown only on Vercel preview deployments, never on production.
+ * Reminds PMs they can comment straight on the page with the Vercel toolbar.
+ */
+const env = process.env.VERCEL_ENV ?? (import.meta.env.DEV ? 'development' : 'production')
+const branch = process.env.VERCEL_GIT_COMMIT_REF
+---
+{env !== 'production' && (
+  <div class="bg-accent text-accent-ink text-center text-xs font-display font-bold uppercase tracking-wider px-4 py-2">
+    {env === 'preview' ? `Preview${branch ? ` · ${branch}` : ''}: not the live site. Spot something? Press C to comment on the page.` : 'Local development'}
+  </div>
+)}

@@ -1,0 +1,21 @@
+---
+/**
+ * Infinite scrolling logo strip (pure CSS, pauses on hover, stops for
+ * reduced-motion users). Pass image logos or plain names.
+ */
+interface Logo { name: string; src?: string }
+interface Props { logos: Logo[]; duration?: number; label?: string }
+const { logos, duration = 30, label = 'Partners' } = Astro.props
+const loop = [...logos, ...logos]
+---
+<div class="marquee relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]" style={`--marquee-duration:${duration}s`} aria-label={label} role="region">
+  <ul class="marquee-track flex w-max items-center gap-14 py-4">
+    {loop.map((logo, i) => (
+      <li aria-hidden={i >= logos.length ? 'true' : undefined} class="shrink-0">
+        {logo.src
+          ? <img src={logo.src} alt={logo.name} class="h-10 w-auto opacity-80" loading="lazy" />
+          : <span class="font-display text-2xl font-bold uppercase tracking-tight opacity-70">{logo.name}</span>}
+      </li>
+    ))}
+  </ul>
+</div>

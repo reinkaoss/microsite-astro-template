@@ -1,0 +1,23 @@
+[
+  {
+    "id": "first",
+    "tag": "1st prize",
+    "title": "Laptop + fast-track interview",
+    "body": "A new laptop and a guaranteed interview for the graduate programme.",
+    "order": 1
+  },
+  {
+    "id": "second",
+    "tag": "Runners-up",
+    "title": "\u00a3250 vouchers",
+    "body": "Five runners-up each win \u00a3250 to spend on tech or books.",
+    "order": 2
+  },
+  {
+    "id": "everyone",
+    "tag": "Everyone",
+    "title": "Feedback on your answers",
+    "body": "Every entrant gets a short personalised report on their strengths.",
+    "order": 3
+  }
+]

@@ -1,0 +1,31 @@
+---
+/**
+ * Wrap cards in <Spotlight> and they get a soft glow that follows the cursor.
+ * Pure CSS + a few lines of JS; no effect on touch devices.
+ */
+interface Props { class?: string }
+const { class: className = '' } = Astro.props
+---
+<div data-spotlight class={`relative ${className}`}><slot /></div>
+<style is:global>
+  [data-spotlight] > * { position: relative; overflow: hidden; }
+  [data-spotlight] > *::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--color-accent) 35%, transparent), transparent 60%);
+  }
+  [data-spotlight] > *:hover::after { opacity: 1; }
+</style>
+<script>
+  function spotlight() {
+    document.querySelectorAll<HTMLElement>('[data-spotlight] > *').forEach((el) => {
+      if (el.dataset.spot) return
+      el.dataset.spot = '1'
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect()
+        el.style.setProperty('--mx', `${e.clientX - r.left}px`)
+        el.style.setProperty('--my', `${e.clientY - r.top}px`)
+      })
+    })
+  }
+  document.addEventListener('astro:page-load', spotlight)
+</script>

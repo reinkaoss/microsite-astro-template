@@ -1,0 +1,18 @@
+---
+/**
+ * The closed state. Every campaign ends here: the index page switches to it
+ * automatically after `closesAt`, and a frozen site is just this page.
+ */
+import campaign from '~/campaign'
+import Button from './starters/Button.astro'
+---
+<section class="relative isolate grid min-h-[80dvh] place-items-center overflow-hidden bg-brand px-5 py-24 text-brand-ink">
+  <div aria-hidden="true" class="float absolute -left-16 top-16 -z-10 size-64 rounded-full bg-accent/80 blur-2xl"></div>
+  <div aria-hidden="true" class="float-slow absolute -right-20 bottom-10 -z-10 size-80 rounded-[3rem] bg-surface/15"></div>
+  <div class="max-w-2xl text-center">
+    <p class="eyebrow !text-brand-ink/80">{campaign.name}</p>
+    <h1 class="mt-4 text-4xl font-bold sm:text-6xl">{campaign.closed.heading}</h1>
+    <p class="mt-6 text-lg opacity-85">{campaign.closed.body}</p>
+    {campaign.closed.link && <Button href={campaign.closed.link.href} variant="accent" size="lg" class="mt-10">{campaign.closed.link.label}</Button>}
+  </div>
+</section>

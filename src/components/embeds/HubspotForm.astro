@@ -1,0 +1,16 @@
+---
+/** HubSpot form (v2 embed). Styles inside the form come from HubSpot. */
+interface Props { portalId: string; formId: string; region?: string; target?: string; sfdcCampaignId?: string }
+const { portalId, formId, region = 'na1', target = 'hubspot-form', sfdcCampaignId } = Astro.props
+---
+<div id={target} class="min-h-[300px]"></div>
+<script is:inline define:vars={{ portalId, formId, region, target, sfdcCampaignId }}>
+  (function () {
+    function create() { window.hbspt.forms.create({ region, portalId, formId, sfdcCampaignId, target: '#' + target }) }
+    if (window.hbspt) return create()
+    var s = document.createElement('script')
+    s.src = 'https://js.hsforms.net/forms/v2.js'
+    s.onload = create
+    document.body.appendChild(s)
+  })()
+</script>

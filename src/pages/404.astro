@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Button from '@/components/starters/Button.astro'
+---
+<BaseLayout title="Page not found" noindex>
+  <section class="grid min-h-[70dvh] place-items-center px-5 py-24 text-center">
+    <div>
+      <p class="font-display text-[8rem] font-bold leading-none text-brand sm:text-[12rem]">404</p>
+      <h1 class="mt-2 text-3xl font-bold">This page doesn't exist.</h1>
+      <Button href="/" class="mt-8">Back to home</Button>
+    </div>
+  </section>
+</BaseLayout>
